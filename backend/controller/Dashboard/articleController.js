@@ -224,21 +224,10 @@ module.exports.delete_article = async (req, res) => {
   try {
     const getArticle = await articleModel.findById(articleId);
 
-    if (
-      (getArticle && getArticle.adminId === adminId) ||
-      getArticle.role === role
-    ) {
-      await articleModel.findByIdAndDelete(articleId);
-      res.status(201).json({
-        successMessage: 'Article delete successfull',
-      });
-    } else {
-      res.status(404).json({
-        errorMessage: {
-          error: 'You can not edit this article',
-        },
-      });
-    }
+    await articleModel.findByIdAndDelete(articleId);
+    res.status(201).json({
+      successMessage: 'Article delete successfull',
+    });
   } catch (error) {
     res.status(500).json({
       errorMessage: {
