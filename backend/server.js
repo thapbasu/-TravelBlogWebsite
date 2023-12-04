@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+const path = require('path');
+
 app.get('/', (req, res) => {
   res.send('server is running');
 });
@@ -33,7 +35,10 @@ app.use('/rest-api', homeRoutes);
 app.use('/rest-api', homeCommentRoutes);
 //db connection
 dbConnect();
-
+app.use(express.static(path.join(__dirname, './frontend/build')));
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, './frontend/build/index.html'));
+});
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, (error) => {
